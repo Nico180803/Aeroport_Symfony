@@ -10,7 +10,6 @@
     {% block navbar %}
         {{ parent() }}
     {% endblock %}
-    <h1>Utilisateur index</h1>
 
     <table class="table">
         <thead>
@@ -38,8 +37,8 @@
                 <td>{{ utilisateur.dateNaissance ? utilisateur.dateNaissance|date('Y-m-d') : '' }}</td>
                 <td>{{ utilisateur.ville }}</td>
                 <td>
-                    <a href="{{ path('app_utilisateur_show', {'id': utilisateur.id}) }}">show</a>
-                    <a href="{{ path('app_utilisateur_edit', {'id': utilisateur.id}) }}">edit</a>
+                    <a href="{{ path('app_utilisateur_show', {'id': utilisateur.id}) }}">Afficher</a>
+                    <a href="{{ path('app_utilisateur_edit', {'id': utilisateur.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -50,5 +49,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_utilisateur_new') }}">Create new</a>
+    <a href="{{ path('app_utilisateur_new') }}">Ajouter Nouveau</a>
 {% endblock %}

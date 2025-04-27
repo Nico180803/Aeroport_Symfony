@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Modele;
-use App\Form\Modele1Type;
+use App\Form\ModeleType;
 use App\Repository\ModeleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +26,7 @@ class ModeleController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $modele = new Modele();
-        $form = $this->createForm(Modele1Type::class, $modele);
+        $form = $this->createForm(ModeleType::class, $modele);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
