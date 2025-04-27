@@ -28,8 +28,8 @@
                 <td>{{ modele.modele }}</td>
                 <td>{{ modele.marque }}</td>
                 <td>
-                    <a href="{{ path('app_modele_show', {'id': modele.id}) }}">show</a>
-                    <a href="{{ path('app_modele_edit', {'id': modele.id}) }}">edit</a>
+                    <a href="{{ path('app_modele_show', {'id': modele.id}) }}">Afficher</a>
+                    <a href="{{ path('app_modele_edit', {'id': modele.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -40,5 +40,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_modele_new') }}">Create new</a>
+    <a href="{{ path('app_modele_new') }}">Ajouter un Modele</a>
 {% endblock %}
