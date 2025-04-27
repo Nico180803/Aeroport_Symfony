@@ -3,6 +3,13 @@
 {% block title %}Vol index{% endblock %}
 
 {% block body %}
+    {% block spinner %}
+        {{ parent() }}
+    {% endblock %}
+
+    {% block navbar %}
+        {{ parent() }}
+    {% endblock %}
     <h1>Vol index</h1>
 
     <table class="table">

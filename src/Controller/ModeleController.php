@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Modele;
-use App\Form\ModeleType;
+use App\Form\Modele1Type;
 use App\Repository\ModeleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,60 +11,71 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/modele')]
 class ModeleController extends AbstractController
 {
-
-    #[Route('/modele', name: 'app_modele')]
+    #[Route('/', name: 'app_modele_index', methods: ['GET'])]
     public function index(ModeleRepository $modeleRepository): Response
     {
-        $modeles = $modeleRepository->findAll();
-        return $this->render('modele/tableau.html.twig', [
-            'modeles' => $modeles,
+        return $this->render('modele/index.html.twig', [
+            'modeles' => $modeleRepository->findAll(),
         ]);
     }
 
-    #[Route('/modele/new', name: 'app_modele_new')]
+    #[Route('/new', name: 'app_modele_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $modele = new Modele();
-        $formulaire = $this->createForm(ModeleType::class, $modele);
-        $formulaire->handleRequest($request);
-        if ($formulaire->isSubmitted() && $formulaire->isValid()) {
+        $form = $this->createForm(Modele1Type::class, $modele);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($modele);
             $entityManager->flush();
-            return $this->redirectToRoute('app_modele');
+
+            return $this->redirectToRoute('app_modele_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('modele/index.html.twig', [
-            'controller_name' => 'ModeleController',
-            'form' => $formulaire->createView(),
+        return $this->renderForm('modele/new.html.twig', [
+            'modele' => $modele,
+            'form' => $form,
         ]);
     }
 
-    #[Route('/modele/{id}/edit', name: 'app_modele_edit')]
-    public function edit($id, Request $request, EntityManagerInterface $entityManager, ModeleRepository $modeleRepository): Response
+    #[Route('/{id}', name: 'app_modele_show', methods: ['GET'])]
+    public function show(Modele $modele): Response
     {
-        $modele = $modeleRepository->find($id);
-        $formulaire = $this->createForm(ModeleType::class, $modele);
-        $formulaire->handleRequest($request);
-        if ($formulaire->isSubmitted() && $formulaire->isValid()) {
-            $entityManager->persist($modele);
-            $entityManager->flush();
-            return $this->redirectToRoute('app_modele');
-        }
-
-        return $this->render('modele/index.html.twig', [
-            'controller_name' => 'ModeleController',
-            'form' => $formulaire->createView(),
+        return $this->render('modele/show.html.twig', [
+            'modele' => $modele,
         ]);
     }
 
-    #[Route('/modele/{id}/delete', name: 'app_modele_supp')]
-    public function delete($id, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/edit', name: 'app_modele_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Modele $modele, EntityManagerInterface $entityManager): Response
     {
-        $modele = $entityManager->find(Modele::class, $id);
-        $entityManager->remove($modele);
-        $entityManager->flush();
-        return $this->redirectToRoute('app_modele');
+        $form = $this->createForm(Modele1Type::class, $modele);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_modele_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('modele/edit.html.twig', [
+            'modele' => $modele,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id}', name: 'app_modele_delete', methods: ['POST'])]
+    public function delete(Request $request, Modele $modele, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$modele->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($modele);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_modele_index', [], Response::HTTP_SEE_OTHER);
     }
 }
