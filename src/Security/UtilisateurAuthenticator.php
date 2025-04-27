@@ -49,7 +49,7 @@ class UtilisateurAuthenticator extends AbstractLoginFormAuthenticator
         }
 
 
-        return new RedirectResponse($this->urlGenerator->generate('app_utilisateur_index'));
+        return new RedirectResponse($this->urlGenerator->generate('app_home'));
         throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
