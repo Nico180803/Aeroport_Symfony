@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -40,8 +42,15 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 50)]
     private ?string $ville = null;
 
-    #[ORM\ManyToOne(inversedBy: 'refUtilisateurs')]
-    private ?Modele $refModele = null;
+
+
+    #[ORM\OneToMany(mappedBy: 'ref_Utilisateur', targetEntity: Reservation::class)]
+    private Collection $reservations;
+
+    public function __construct()
+    {
+        $this->reservations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -188,6 +197,48 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRefModele(?Modele $refModele): static
     {
         $this->refModele = $refModele;
+
+        return $this;
+    }
+
+    public function getReservation(): ?Reservation
+    {
+        return $this->reservation;
+    }
+
+    public function setReservation(?Reservation $reservation): static
+    {
+        $this->reservation = $reservation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): static
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setRefUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): static
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getRefUtilisateur() === $this) {
+                $reservation->setRefUtilisateur(null);
+            }
+        }
 
         return $this;
     }

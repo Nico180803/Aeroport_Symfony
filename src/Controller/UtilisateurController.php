@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Utilisateur;
+use App\Form\UtilisateurModifType;
 use App\Form\UtilisateurType;
 use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -46,8 +47,29 @@ class UtilisateurController extends AbstractController
             'form' => $form,
         ]);
     }
+    #[Route('/profil', name: 'app_utilisateur_profil', methods: ['GET', 'POST'])]
+    public function profil(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $utilisateur = $this->getUser();
+        $reservation = $this->getUser()->getReservation();
 
-    #[Route('/{id}', name: 'app_utilisateur_show', methods: ['GET'])]
+        $form = $this->createForm(UtilisateurModifType::class, $utilisateur);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_utilisateur_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('utilisateur/profil.html.twig', [
+            'utilisateur' => $utilisateur,
+            'form' => $form,
+            'reservation' => $reservation,
+        ]);
+    }
+
+    #[Route('/{id}', name: 'app_utilisateur_show',requirements: ['id' => '\d+']  ,methods: ['GET'] ) ]
     public function show(Utilisateur $utilisateur): Response
     {
         return $this->render('utilisateur/show.html.twig', [
@@ -83,4 +105,6 @@ class UtilisateurController extends AbstractController
 
         return $this->redirectToRoute('app_utilisateur_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
 }

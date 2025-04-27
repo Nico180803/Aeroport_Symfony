@@ -81,6 +81,7 @@
                         {% endif %}
                         <div class="dropdown-menu fade-up m-0">
                             {% if app.user %}
+                                <a href="{{ path('app_utilisateur_profil') }}" class="dropdown-item">Profil</a>
                                 <a href="{{ path('app_logout') }}" class="dropdown-item">Déconnexion</a>
                             {% else %}
                                 <a href="{{ path('app_utilisateur_new') }}" class="dropdown-item">Inscription</a>
