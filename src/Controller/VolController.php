@@ -15,10 +15,21 @@ use Symfony\Component\Routing\Annotation\Route;
 class VolController extends AbstractController
 {
     #[Route('/', name: 'app_vol_index', methods: ['GET'])]
-    public function index(VolRepository $volRepository): Response
+
+    #[Route('/destination', name: 'app_reservation_destination', methods: ['GET'])]
+    public function destination(VolRepository $volRepository, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $destination = $volRepository->getAllVols($entityManager);
+        return $this->render('reservation/destination.html.twig', [
+            'destinations' => $destination,
+        ]);
+    }
+
+    public function index(VolRepository $volRepository, $ville = null): Response
     {
         return $this->render('vol/index.html.twig', [
             'vols' => $volRepository->findAll(),
+            'ville' => $ville,
         ]);
     }
 

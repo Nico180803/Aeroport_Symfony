@@ -47,6 +47,9 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'ref_Utilisateur', targetEntity: Reservation::class)]
     private Collection $reservations;
 
+    #[ORM\ManyToOne(inversedBy: 'utilisateurs')]
+    private ?Modele $refModele = null;
+
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
@@ -200,19 +203,6 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
-    public function getReservation(): ?Reservation
-    {
-        return $this->reservation;
-    }
-
-    public function setReservation(?Reservation $reservation): static
-    {
-        $this->reservation = $reservation;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Reservation>
      */

@@ -27,10 +27,14 @@ class Modele
     #[ORM\OneToMany(mappedBy: 'refModele', targetEntity: Utilisateur::class)]
     private Collection $refUtilisateurs;
 
+    #[ORM\OneToMany(mappedBy: 'ref_modele', targetEntity: Utilisateur::class)]
+    private Collection $utilisateurs;
+
     public function __construct()
     {
         $this->refAvions = new ArrayCollection();
         $this->refUtilisateurs = new ArrayCollection();
+        $this->utilisateurs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -122,6 +126,36 @@ class Modele
             // set the owning side to null (unless already changed)
             if ($refUtilisateur->getRefModele() === $this) {
                 $refUtilisateur->setRefModele(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Utilisateur>
+     */
+    public function getUtilisateurs(): Collection
+    {
+        return $this->utilisateurs;
+    }
+
+    public function addUtilisateur(Utilisateur $utilisateur): static
+    {
+        if (!$this->utilisateurs->contains($utilisateur)) {
+            $this->utilisateurs->add($utilisateur);
+            $utilisateur->setRefModele($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUtilisateur(Utilisateur $utilisateur): static
+    {
+        if ($this->utilisateurs->removeElement($utilisateur)) {
+            // set the owning side to null (unless already changed)
+            if ($utilisateur->getRefModele() === $this) {
+                $utilisateur->setRefModele(null);
             }
         }
 

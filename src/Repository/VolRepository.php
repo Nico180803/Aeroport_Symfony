@@ -21,6 +21,15 @@ class VolRepository extends ServiceEntityRepository
         parent::__construct($registry, Vol::class);
     }
 
+    public function getAllVols($entityManager)
+    {
+        $q = $entityManager->createQuery(
+            'SELECT DISTINCT v.villeArrive FROM App\Entity\Vol v WHERE v.villeArrive IS NOT NULL'
+        );
+
+        return $q->execute();
+    }
+
 //    /**
 //     * @return Vol[] Returns an array of Vol objects
 //     */

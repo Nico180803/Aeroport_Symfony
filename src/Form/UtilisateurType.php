@@ -18,7 +18,8 @@ class UtilisateurType extends AbstractType
             ->add('prenom')
             ->add('dateNaissance')
             ->add('ville')
-            ->add('refModele')
+
+             ->add('refModele')
         ;
     }
 

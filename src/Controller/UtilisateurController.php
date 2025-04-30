@@ -29,6 +29,7 @@ class UtilisateurController extends AbstractController
     {
         $utilisateur = new Utilisateur();
         $form = $this->createForm(UtilisateurType::class, $utilisateur);
+        $form->remove("refModele");
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -51,7 +52,7 @@ class UtilisateurController extends AbstractController
     public function profil(Request $request, EntityManagerInterface $entityManager): Response
     {
         $utilisateur = $this->getUser();
-        $reservation = $this->getUser()->getReservation();
+        $reservation = $this->getUser()->getReservations();
 
         $form = $this->createForm(UtilisateurModifType::class, $utilisateur);
         $form->handleRequest($request);
@@ -65,7 +66,7 @@ class UtilisateurController extends AbstractController
         return $this->renderForm('utilisateur/profil.html.twig', [
             'utilisateur' => $utilisateur,
             'form' => $form,
-            'reservation' => $reservation,
+            'reservations' => $reservation,
         ]);
     }
 
