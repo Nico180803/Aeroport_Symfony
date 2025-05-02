@@ -37,13 +37,27 @@
                         {% if reservations is empty %}
                             <p>Vous n'avez pas encore de réservations.</p>
                         {% else %}
-                            <ul>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Vol</th>
+                                    <th>Date</th>
+                                    <th>Heure</th>
+                                    <th>Action</th>
+                                </tr>
+
+                                </thead>
+                                <tbody>
                                 {% for reservation in reservations %}
-                                    <li>
-                                        {{ reservation.refUtilisateur }} / {{ reservation.refVol }} /{{ reservation.refVol.dateDepart | date('Y-m-d')  }}/{{ reservation.refVol.heureDepart }}
-                                    </li>
+                                    <tr>
+                                        <td>{{ reservation.refVol }} </td>
+                                        <td>{{ reservation.refVol.dateDepart | date('Y-m-d')  }}</td>
+                                        <td>{{ reservation.refVol.heureDepart | date('H:i') }}</td>
+                                        <td><a href="">Supprimer</a></td>
+                                    </tr>
                                 {% endfor %}
-                            </ul>
+                                </tbody>
+                            </table>
                         {% endif %}
                     </div>
                 </div>
