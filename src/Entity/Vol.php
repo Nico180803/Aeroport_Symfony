@@ -149,4 +149,8 @@ class Vol
 
         return $this;
     }
+    public function __toString(): string
+    {
+        return $this->villeDepart . ' - ' . $this->villeArrive;
+    }
 }

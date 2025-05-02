@@ -40,7 +40,7 @@
                             <ul>
                                 {% for reservation in reservations %}
                                     <li>
-                                        {{ reservation.nom }} - {{ reservation.date | date('d/m/Y') }}
+                                        {{ reservation.refUtilisateur }} / {{ reservation.refVol }} /{{ reservation.refVol.dateDepart | date('Y-m-d')  }}/{{ reservation.refVol.heureDepart }}
                                     </li>
                                 {% endfor %}
                             </ul>

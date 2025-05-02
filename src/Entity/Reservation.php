@@ -22,16 +22,12 @@ class Reservation
     #[ORM\JoinColumn(nullable: false)]
     private ?Vol $refVol = null;
 
-    #[ORM\OneToMany(mappedBy: 'reservation', targetEntity: Utilisateur::class)]
-    private Collection $refUtilisateur;
-
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $ref_Utilisateur = null;
 
     public function __construct()
     {
-        $this->refUtilisateur = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -63,40 +59,16 @@ class Reservation
         return $this;
     }
 
-    /**
-     * @return Collection<int, Utilisateur>
-     */
-    public function getRefUtilisateur(): Collection
-    {
-        return $this->refUtilisateur;
-    }
-
-    public function addRefUtilisateur(Utilisateur $refUtilisateur): static
-    {
-        if (!$this->refUtilisateur->contains($refUtilisateur)) {
-            $this->refUtilisateur->add($refUtilisateur);
-            $refUtilisateur->setReservation($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRefUtilisateur(Utilisateur $refUtilisateur): static
-    {
-        if ($this->refUtilisateur->removeElement($refUtilisateur)) {
-            // set the owning side to null (unless already changed)
-            if ($refUtilisateur->getReservation() === $this) {
-                $refUtilisateur->setReservation(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function setRefUtilisateur(?Utilisateur $ref_Utilisateur): static
     {
         $this->ref_Utilisateur = $ref_Utilisateur;
 
         return $this;
     }
+
+    public function getRefUtilisateur(): ?Utilisateur
+    {
+        return $this->ref_Utilisateur;
+    }
+    
 }

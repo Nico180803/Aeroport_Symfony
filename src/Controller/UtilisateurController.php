@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Reservation;
 use App\Entity\Utilisateur;
 use App\Form\UtilisateurModifType;
 use App\Form\UtilisateurType;
 use App\Repository\UtilisateurRepository;
+use App\Repository\VolRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,7 +55,7 @@ class UtilisateurController extends AbstractController
     public function profil(Request $request, EntityManagerInterface $entityManager): Response
     {
         $utilisateur = $this->getUser();
-        $reservation = $this->getUser()->getReservations();
+        $reservations = $this->getUser()->getReservations();
 
         $form = $this->createForm(UtilisateurModifType::class, $utilisateur);
         $form->handleRequest($request);
@@ -66,7 +69,7 @@ class UtilisateurController extends AbstractController
         return $this->renderForm('utilisateur/profil.html.twig', [
             'utilisateur' => $utilisateur,
             'form' => $form,
-            'reservations' => $reservation,
+            'reservations' => $reservations,
         ]);
     }
 

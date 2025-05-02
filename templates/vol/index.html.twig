@@ -10,34 +10,49 @@
     {% block navbar %}
         {{ parent() }}
     {% endblock %}
-    <h1>Vol index</h1>
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>VilleDepart</th>
-                <th>VilleArrive</th>
-                <th>DateDepart</th>
-                <th>HeureDepart</th>
-                <th>PrixBilletInitial</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Ville de Depart</th>
+            <th>Ville d'Arrive</th>
+            <th>Date de Depart</th>
+            <th>Heure de Depart</th>
+            <th>Prix du Billet</th>
+            <th></th>
+        </tr>
         </thead>
         <tbody>
         {% for vol in vols %}
-            <tr>
-                <td>{{ vol.id }}</td>
-                <td>{{ vol.villeDepart }}</td>
-                <td>{{ vol.villeArrive }}</td>
-                <td>{{ vol.dateDepart ? vol.dateDepart|date('Y-m-d') : '' }}</td>
-                <td>{{ vol.heureDepart ? vol.heureDepart|date('H:i:s') : '' }}</td>
-                <td>{{ vol.prixBilletInitial }}</td>
-                <td>
-                    <a href="{{ path('app_vol_show', {'id': vol.id}) }}">show</a>
-                    <a href="{{ path('app_vol_edit', {'id': vol.id}) }}">edit</a>
-                </td>
-            </tr>
+            {% if ville != null %}
+                {% if vol.villeArrive == ville  %}
+                    <tr>
+                        <td>{{ vol.id }}</td>
+                        <td>{{ vol.villeDepart }}</td>
+                        <td>{{ vol.villeArrive }}</td>
+                        <td>{{ vol.dateDepart ? vol.dateDepart|date('Y-m-d') : '' }}</td>
+                        <td>{{ vol.heureDepart ? vol.heureDepart|date('H:i:s') : '' }}</td>
+                        <td>{{ vol.prixBilletInitial }}€</td>
+                        <td>
+                            <a href="{{ path('app_reservation_new', {'id': vol.id}) }}">Reserver</a>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% else %}
+                <tr>
+                    <td>{{ vol.id }}</td>
+                    <td>{{ vol.villeDepart }}</td>
+                    <td>{{ vol.villeArrive }}</td>
+                    <td>{{ vol.dateDepart ? vol.dateDepart|date('Y-m-d') : '' }}</td>
+                    <td>{{ vol.heureDepart ? vol.heureDepart|date('H:i:s') : '' }}</td>
+                    <td>{{ vol.prixBilletInitial }}</td>
+                    <td>
+                        <a href="{{ path('app_vol_show', {'id': vol.id}) }}">show</a>
+                        <a href="{{ path('app_vol_edit', {'id': vol.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% endif %}
         {% else %}
             <tr>
                 <td colspan="7">no records found</td>
