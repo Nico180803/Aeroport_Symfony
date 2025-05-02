@@ -14,7 +14,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/vol')]
 class VolController extends AbstractController
 {
-    #[Route('/', name: 'app_vol_index', methods: ['GET'])]
 
     #[Route('/destination', name: 'app_reservation_destination', methods: ['GET'])]
     public function destination(VolRepository $volRepository, Request $request, EntityManagerInterface $entityManager): Response
@@ -25,6 +24,7 @@ class VolController extends AbstractController
         ]);
     }
 
+    #[Route('/{ville}', name: 'app_vol_index', methods: ['GET'])]
     public function index(VolRepository $volRepository, $ville = null): Response
     {
         return $this->render('vol/index.html.twig', [
