@@ -98,6 +98,10 @@ class ReservationController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_reservation_index', [], Response::HTTP_SEE_OTHER);
+        if ($this->getUser()->hasRole('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_reservation_index', [], Response::HTTP_SEE_OTHER);
+        }else{
+            return $this->redirectToRoute('app_utilisateur_profil');
+        }
     }
 }

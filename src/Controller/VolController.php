@@ -23,16 +23,6 @@ class VolController extends AbstractController
             'destinations' => $destination,
         ]);
     }
-
-    #[Route('/{ville}', name: 'app_vol_index', methods: ['GET'])]
-    public function index(VolRepository $volRepository, $ville = null): Response
-    {
-        return $this->render('vol/index.html.twig', [
-            'vols' => $volRepository->findAll(),
-            'ville' => $ville,
-        ]);
-    }
-
     #[Route('/new', name: 'app_vol_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -52,6 +42,16 @@ class VolController extends AbstractController
             'form' => $form,
         ]);
     }
+    #[Route('/{ville}', name: 'app_vol_index', methods: ['GET'])]
+    public function index(VolRepository $volRepository, $ville = null): Response
+    {
+        return $this->render('vol/index.html.twig', [
+            'vols' => $volRepository->findAll(),
+            'ville' => $ville,
+        ]);
+    }
+
+
 
     #[Route('/{id}', name: 'app_vol_show', methods: ['GET'])]
     public function show(Vol $vol): Response
