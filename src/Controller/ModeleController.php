@@ -17,6 +17,9 @@ class ModeleController extends AbstractController
     #[Route('/', name: 'app_modele_index', methods: ['GET'])]
     public function index(ModeleRepository $modeleRepository): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_home');
+        }
         return $this->render('modele/index.html.twig', [
             'modeles' => $modeleRepository->findAll(),
         ]);
@@ -25,6 +28,9 @@ class ModeleController extends AbstractController
     #[Route('/new', name: 'app_modele_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_home');
+        }
         $modele = new Modele();
         $form = $this->createForm(ModeleType::class, $modele);
         $form->handleRequest($request);
@@ -45,6 +51,9 @@ class ModeleController extends AbstractController
     #[Route('/{id}', name: 'app_modele_show', methods: ['GET'])]
     public function show(Modele $modele): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_home');
+        }
         return $this->render('modele/show.html.twig', [
             'modele' => $modele,
         ]);
@@ -53,6 +62,9 @@ class ModeleController extends AbstractController
     #[Route('/{id}/edit', name: 'app_modele_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Modele $modele, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_home');
+        }
         $form = $this->createForm(Modele1Type::class, $modele);
         $form->handleRequest($request);
 
@@ -71,6 +83,9 @@ class ModeleController extends AbstractController
     #[Route('/{id}', name: 'app_modele_delete', methods: ['POST'])]
     public function delete(Request $request, Modele $modele, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_home');
+        }
         if ($this->isCsrfTokenValid('delete'.$modele->getId(), $request->request->get('_token'))) {
             $entityManager->remove($modele);
             $entityManager->flush();

@@ -22,6 +22,9 @@ class UtilisateurController extends AbstractController
     #[Route('/', name: 'app_utilisateur_index', methods: ['GET'])]
     public function index(UtilisateurRepository $utilisateurRepository): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_home');
+        }
         return $this->render('utilisateur/index.html.twig', [
             'utilisateurs' => $utilisateurRepository->findAll(),
         ]);
@@ -32,7 +35,10 @@ class UtilisateurController extends AbstractController
     {
         $utilisateur = new Utilisateur();
         $form = $this->createForm(UtilisateurType::class, $utilisateur);
-        $form->remove("refModele");
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $form->remove("refModele");
+            $form->remove("roles");
+        }
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -49,11 +55,15 @@ class UtilisateurController extends AbstractController
         return $this->renderForm('utilisateur/new.html.twig', [
             'utilisateur' => $utilisateur,
             'form' => $form,
+
         ]);
     }
     #[Route('/profil', name: 'app_utilisateur_profil', methods: ['GET', 'POST'])]
     public function profil(Request $request, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('app_login');
+        }
         $utilisateur = $this->getUser();
         $reservations = $this->getUser()->getReservations();
 
@@ -76,6 +86,9 @@ class UtilisateurController extends AbstractController
     #[Route('/{id}', name: 'app_utilisateur_show',requirements: ['id' => '\d+']  ,methods: ['GET'] ) ]
     public function show(Utilisateur $utilisateur): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_home');
+        }
         return $this->render('utilisateur/show.html.twig', [
             'utilisateur' => $utilisateur,
         ]);

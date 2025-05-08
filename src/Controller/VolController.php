@@ -18,6 +18,9 @@ class VolController extends AbstractController
     #[Route('/destination', name: 'app_reservation_destination', methods: ['GET'])]
     public function destination(VolRepository $volRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('app_login');
+        }
         $destination = $volRepository->getAllVols($entityManager);
         return $this->render('reservation/destination.html.twig', [
             'destinations' => $destination,
@@ -26,6 +29,9 @@ class VolController extends AbstractController
     #[Route('/new', name: 'app_vol_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_home');
+        }
         $vol = new Vol();
         $form = $this->createForm(VolType::class, $vol);
         $form->handleRequest($request);
@@ -45,6 +51,9 @@ class VolController extends AbstractController
     #[Route('/{ville}', name: 'app_vol_index', methods: ['GET'])]
     public function index(VolRepository $volRepository, $ville = null): Response
     {
+        if (!$this->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('app_login');
+        }
         return $this->render('vol/index.html.twig', [
             'vols' => $volRepository->findAll(),
             'ville' => $ville,
@@ -56,6 +65,9 @@ class VolController extends AbstractController
     #[Route('/{id}', name: 'app_vol_show', methods: ['GET'])]
     public function show(Vol $vol): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_home');
+        }
         return $this->render('vol/show.html.twig', [
             'vol' => $vol,
         ]);
@@ -64,6 +76,9 @@ class VolController extends AbstractController
     #[Route('/{id}/edit', name: 'app_vol_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Vol $vol, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_home');
+        }
         $form = $this->createForm(VolType::class, $vol);
         $form->handleRequest($request);
 
@@ -82,6 +97,12 @@ class VolController extends AbstractController
     #[Route('/{id}', name: 'app_vol_delete', methods: ['POST'])]
     public function delete(Request $request, Vol $vol, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_home');
+        }
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_home');
+        }
         if ($this->isCsrfTokenValid('delete'.$vol->getId(), $request->request->get('_token'))) {
             $entityManager->remove($vol);
             $entityManager->flush();
