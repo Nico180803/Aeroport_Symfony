@@ -2,7 +2,11 @@
 
 namespace App\Form;
 
+use App\Entity\Utilisateur;
 use App\Entity\Vol;
+use App\Repository\UtilisateurRepository;
+use Doctrine\ORM\QueryBuilder;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,7 +22,16 @@ class VolType extends AbstractType
             ->add('heureDepart')
             ->add('prixBilletInitial')
             ->add('refAvion')
-        ;
+            ->add('ref_pilote', EntityType::class, [
+                'class' => Utilisateur::class,
+                'query_builder' => function (UtilisateurRepository $er): QueryBuilder {
+                    return $er->createQueryBuilder('u')
+                        ->where('u.roles LIKE :role')
+                        ->setParameter("role", "%ROLE_PILOTE%");
+                },
+                'choice_label' => 'nom',
+                'placeholder' => 'Choisissez un pilote',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
