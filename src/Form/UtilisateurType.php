@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Utilisateur;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,8 +19,15 @@ class UtilisateurType extends AbstractType
             ->add('prenom')
             ->add('dateNaissance')
             ->add('ville')
-
-             ->add('refModele')
+            ->add('roles',ChoiceType::class, [
+                'multiple' => true,
+                'expanded' => true,
+                'choices'  => [
+                    'Admin' => 'ROLE_ADMIN',
+                    'Pilote' => 'ROLE_PILOTE',
+                ]
+            ])
+            ->add('refModele')
         ;
     }
 
