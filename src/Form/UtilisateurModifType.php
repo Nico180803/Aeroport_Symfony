@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Utilisateur;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,7 +16,9 @@ class UtilisateurModifType extends AbstractType
             ->add('email')
             ->add('nom')
             ->add('prenom')
-            ->add('dateNaissance')
+            ->add('dateNaissance', DateType::class, [
+                'widget' => 'single_text',
+            ])
             ->add('ville')
         ;
     }

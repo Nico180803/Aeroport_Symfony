@@ -54,10 +54,14 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'ref_pilote', targetEntity: Vol::class)]
     private Collection $vols;
 
+    #[ORM\OneToMany(mappedBy: 'ref_utilisateur', targetEntity: Conges::class)]
+    private Collection $conges;
+
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
         $this->vols = new ArrayCollection();
+        $this->conges = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -270,6 +274,36 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($vol->getRefPilote() === $this) {
                 $vol->setRefPilote(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Conges>
+     */
+    public function getConges(): Collection
+    {
+        return $this->conges;
+    }
+
+    public function addConge(Conges $conge): static
+    {
+        if (!$this->conges->contains($conge)) {
+            $this->conges->add($conge);
+            $conge->setRefUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConge(Conges $conge): static
+    {
+        if ($this->conges->removeElement($conge)) {
+            // set the owning side to null (unless already changed)
+            if ($conge->getRefUtilisateur() === $this) {
+                $conge->setRefUtilisateur(null);
             }
         }
 

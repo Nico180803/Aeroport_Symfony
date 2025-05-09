@@ -23,6 +23,10 @@ class Conges
     #[ORM\Column]
     private ?bool $estValide = null;
 
+    #[ORM\ManyToOne(inversedBy: 'conges')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Utilisateur $ref_utilisateur = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +64,18 @@ class Conges
     public function setEstValide(bool $estValide): static
     {
         $this->estValide = $estValide;
+
+        return $this;
+    }
+
+    public function getRefUtilisateur(): ?Utilisateur
+    {
+        return $this->ref_utilisateur;
+    }
+
+    public function setRefUtilisateur(?Utilisateur $ref_utilisateur): static
+    {
+        $this->ref_utilisateur = $ref_utilisateur;
 
         return $this;
     }
