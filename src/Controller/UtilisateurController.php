@@ -74,7 +74,7 @@ class UtilisateurController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_utilisateur_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_utilisateur_profil', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('utilisateur/profil.html.twig', [

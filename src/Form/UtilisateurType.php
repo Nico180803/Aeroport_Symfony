@@ -20,6 +20,7 @@ class UtilisateurType extends AbstractType
             ->add('prenom')
             ->add('dateNaissance', DateType::class, [
                 'widget' => 'single_text',
+                'format' => 'dd-MM-yyyy',
             ])
             ->add('ville')
             ->add('roles',ChoiceType::class, [

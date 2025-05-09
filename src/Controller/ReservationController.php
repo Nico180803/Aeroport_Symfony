@@ -35,9 +35,6 @@ class ReservationController extends AbstractController
     #[Route('/new/{id}', name: 'app_reservation_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, Vol $vol = null, ManagerRegistry $registry): Response
     {
-        if (!$this->isGranted('ROLE_ADMIN')) {
-            return $this->redirectToRoute('app_home');
-        }
         $reservation = new Reservation();
         $form = $this->createForm(ReservationType::class, $reservation);
 
