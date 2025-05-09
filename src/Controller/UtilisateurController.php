@@ -66,6 +66,7 @@ class UtilisateurController extends AbstractController
         }
         $utilisateur = $this->getUser();
         $reservations = $this->getUser()->getReservations();
+        $conges = $this->getUser()->getConges();
 
         $form = $this->createForm(UtilisateurModifType::class, $utilisateur);
         $form->handleRequest($request);
@@ -80,6 +81,7 @@ class UtilisateurController extends AbstractController
             'utilisateur' => $utilisateur,
             'form' => $form,
             'reservations' => $reservations,
+            'conges' => $conges
         ]);
     }
 

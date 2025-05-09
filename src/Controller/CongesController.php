@@ -22,18 +22,28 @@ class CongesController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_conges_new', methods: ['GET', 'POST'])]
+    #[Route('/new/', name: 'app_conges_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $conge = new Conges();
         $form = $this->createForm(CongesType::class, $conge);
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $form->remove('estValide');
+            $form->remove('ref_utilisateur');
+            $conge->setEstValide(false);
+            $conge->setRefUtilisateur($this->getUser());
+        }
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($conge);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_conges_index', [], Response::HTTP_SEE_OTHER);
+            if (!$this->isGranted('ROLE_ADMIN')) {
+                return $this->redirectToRoute('app_utilisateur_profil', [], Response::HTTP_SEE_OTHER);
+            }else {
+                return $this->redirectToRoute('app_conges_index', [], Response::HTTP_SEE_OTHER);
+            }
         }
 
         return $this->renderForm('conges/new.html.twig', [

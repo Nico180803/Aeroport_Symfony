@@ -26,7 +26,7 @@
         {% for conge in conges %}
             <tr>
                 <td>{{ conge.id }}</td>
-                <td>{{ conge.dateDebut }}</td>
+                <td>{{ conge.dateDebut ? conge.dateFin|date('Y-m-d') : '' }}</td>
                 <td>{{ conge.dateFin ? conge.dateFin|date('Y-m-d') : '' }}</td>
                 <td>{{ conge.estValide ? 'Yes' : 'No' }}</td>
                 <td>

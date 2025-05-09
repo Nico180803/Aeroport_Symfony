@@ -15,9 +15,11 @@ class CongesType extends AbstractType
         $builder
             ->add('dateDebut', DateType::class, [
                 'widget' => 'single_text',
+                'input' => 'datetime',
         ])
             ->add('dateFin', DateType::class, [
                 'widget' => 'single_text',
+                'input' => 'datetime',
             ])
             ->add('estValide')
             ->add('ref_utilisateur')

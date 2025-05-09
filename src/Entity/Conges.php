@@ -14,7 +14,7 @@ class Conges
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dateDebut = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -32,12 +32,12 @@ class Conges
         return $this->id;
     }
 
-    public function getDateDebut(): ?string
+    public function getDateDebut(): ?\DateTimeInterface
     {
         return $this->dateDebut;
     }
 
-    public function setDateDebut(string $dateDebut): static
+    public function setDateDebut($dateDebut): static
     {
         $this->dateDebut = $dateDebut;
 
