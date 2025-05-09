@@ -20,7 +20,7 @@
             </tr>
             <tr>
                 <th>DateDebut</th>
-                <td>{{ conge.dateDebut }}</td>
+                <td>{{ conge.dateDebut ? conge.dateFin|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
                 <th>DateFin</th>
@@ -33,9 +33,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_conges_index') }}">back to list</a>
+    <a href="{{ path('app_conges_index') }}">Retour à la liste</a>
 
-    <a href="{{ path('app_conges_edit', {'id': conge.id}) }}">edit</a>
+    <a href="{{ path('app_conges_edit', {'id': conge.id}) }}">Modifier</a>
 
     {{ include('conges/_delete_form.html.twig') }}
 {% endblock %}
