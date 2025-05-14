@@ -37,11 +37,16 @@ class VolController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($vol);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_vol_index', [], Response::HTTP_SEE_OTHER);
+            if($vol->getRefAvion()->getRefModele() === $vol->getRefPilote()->getRefModele()) {
+                $entityManager->persist($vol);
+                $entityManager->flush();
+                return $this->redirectToRoute('app_vol_index', [], Response::HTTP_SEE_OTHER);
+            }else{
+                $this->addFlash("warning","ghjfxnhcjuiykftjdgjkyiuytjftuyi");
+            }
         }
+        $this->addFlash("success","ghjfxnhcjuiykftjdgjkyiuytjftuyi");
+        $this->addFlash("warning","ghjfxnhcjuiykftjdgjkyiuytjftuyi");
 
         return $this->renderForm('vol/new.html.twig', [
             'vol' => $vol,

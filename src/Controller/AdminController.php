@@ -17,6 +17,9 @@ class AdminController extends AbstractController
     #[Route('/', name: 'app_admin')]
     public function index(): Response
     {
+        $this->addFlash("success","ghjfxnhcjuiykftjdgjkyiuytjftuyi");
+        $this->addFlash("warning","ghjfxnhcjuiykftjdgjkyiuytjftuyi");
+
         if ($this->isGranted('ROLE_ADMIN')) {
             return $this->render('admin/index.html.twig');
         }else{
